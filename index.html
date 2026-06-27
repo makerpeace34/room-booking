@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Room Register</title>
     <style>
         /* Basic styling - you can customize this to match your department */
@@ -54,6 +55,10 @@
   button:hover {
     background-color: #003366;
   }
+  .table-container {
+    overflow-x: auto; /* This creates the scrollbar */
+    width: 100%;
+}
 </style>
 </head>
 <div class="header">
@@ -110,112 +115,102 @@
 <table id="bookingsTable" border="1" style="width:100%; border-collapse: collapse;">
     <thead>
         <tr>
-            <th>Date</th><th>Name</th><th>Service</th><th>Room</th>
-            <th>Phone</th><th>Booker</th><th>Observation</th>
-        </tr>
+        <th>Date</th>
+        <th>Names</th>
+        <th>Service</th>
+        <th>Type of Room</th>
+        <th>Admission Date</th>
+        <th>Phone</th>
+        <th>Submitted By</th>
+        <th>Observation</th>
+    </tr>
     </thead>
     <tbody id="tableBody"></tbody>
 </table>
 
     <script>
-        const form = document.getElementById('bookingForm');
-        const submitBtn = document.getElementById('submitBtn');
-        
-        // 🚨 CRITICAL: Paste your actual Google Web App URL inside the quotes below!
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwlsZwKW8g8y8ARStSivQ4ernhKPK15DxJiGjv3-GLJ4pZo4UfXEgA2XVobafRQCoQ8JQ/exec'; 
-
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            submitBtn.innerText = "Submitting...";
-            submitBtn.disabled = true;
-
-            // This line packages the data in the exact format Google Apps Script prefers
-            const data = new URLSearchParams(new FormData(form));
-
-            fetch(scriptURL, { 
-                method: 'POST', 
-                body: data
-            })
-            .then(response => {
-                alert('Success! Patient room booked securely.');
-                form.reset();
-                submitBtn.innerText = "Submit Booking";
-                submitBtn.disabled = false;
-            })
-            .catch(error => {
-                console.error('Error!', error.message);
-                alert('There was an error. Please check your internet connection or URL.');
-                submitBtn.innerText = "Submit Booking";
-                submitBtn.disabled = false;
-            });
-        });
-        function loadBookings() {
-    fetch(scriptURL)
-        .then(res => res.json())
-        .then(data => {
-            const tableBody = document.getElementById('tableBody');
-            tableBody.innerHTML = '';
-            data.forEach(row => {
-                const tr = document.createElement('tr');
-                for(let i = 0; i < 7; i++) {
-                    const td = document.createElement('td');
-                    td.innerText = row[i] || '';
-                    tr.appendChild(td);
-                }
-                tableBody.appendChild(tr);
-            });
-        });
-}
-window.onload = function loadBookings() {
-    const tableBody = document.getElementById('tableBody');
+    const form = document.getElementById('bookingForm');
+    const submitBtn = document.getElementById('submitBtn');
     
-    fetch(scriptURL)
-        .then(res => res.json())
-        .then(data => {
-            tableBody.innerHTML = ''; // Clear previous
-            
-            if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7">No bookings found.</td></tr>';
-                return;
-            }
+    // Your Web App URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwlsZwKW8g8y8ARStSivQ4ernhKPK15DxJiGjv3-GLJ4pZo4UfXEgA2XVobafRQCoQ8JQ/exec'; 
 
-            data.forEach(row => {
-                const tr = document.createElement('tr');
-                // Ensure we only process the 7 columns we defined
-                for(let i = 0; i < 7; i++) {
-                    const td = document.createElement('td');
-                    td.style.border = "1px solid #ccc";
-                    td.style.padding = "8px";
-                    td.innerText = row[i] || '-'; // Shows '-' if cell is empty
-                    tr.appendChild(td);
-                }
-                tableBody.appendChild(tr);
-            });
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        submitBtn.innerText = "Submitting...";
+        submitBtn.disabled = true;
+
+        const data = new URLSearchParams(new FormData(form));
+
+        fetch(scriptURL, { 
+            method: 'POST', 
+            body: data
         })
-        .catch(err => {
-            console.error("Fetch Error:", err);
-            tableBody.innerHTML = '<tr><td colspan="7">Error loading data.</td></tr>';
+        .then(response => {
+            alert('Success! Patient room booked securely.');
+            form.reset();
+            submitBtn.innerText = "Submit Booking";
+            submitBtn.disabled = false;
+            loadBookings(); // Refresh the table after submission
+        })
+        .catch(error => {
+            console.error('Error!', error.message);
+            alert('There was an error.');
+            submitBtn.innerText = "Submit Booking";
+            submitBtn.disabled = false;
         });
-};
-function searchTable() {
-    const input = document.getElementById("searchInput");
-    const filter = input.value.toUpperCase();
-    const table = document.getElementById("bookingsTable");
-    const tr = table.getElementsByTagName("tr");
+    });
 
-    for (let i = 1; i < tr.length; i++) {
-        const td = tr[i].getElementsByTagName("td")[1]; // Column 1 is "Name"
-        if (td) {
-            const txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
+    function loadBookings() {
+        const tableBody = document.getElementById('tableBody');
+        
+        fetch(scriptURL)
+            .then(res => res.json())
+            .then(data => {
+                tableBody.innerHTML = ''; // Clear previous
+                
+                if (data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="8">No bookings found.</td></tr>';
+                    return;
+                }
+
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    // Changed loop to 8 to include the Observation column
+                    for(let i = 0; i < 8; i++) {
+                        const td = document.createElement('td');
+                        td.style.border = "1px solid #ccc";
+                        td.style.padding = "8px";
+                        td.innerText = row[i] || '-'; 
+                        tr.appendChild(td);
+                    }
+                    tableBody.appendChild(tr);
+                });
+            })
+            .catch(err => {
+                console.error("Fetch Error:", err);
+                tableBody.innerHTML = '<tr><td colspan="8">Error loading data.</td></tr>';
+            });
+    }
+
+    // Load data automatically when the page opens
+    window.onload = loadBookings;
+
+    function searchTable() {
+        const input = document.getElementById("searchInput");
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById("bookingsTable");
+        const tr = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < tr.length; i++) {
+            const td = tr[i].getElementsByTagName("td")[1]; // Column 1 is "Names"
+            if (td) {
+                const txtValue = td.textContent || td.innerText;
+                tr[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
             }
         }
     }
-}
-    </script>
+</script>
     <button onclick="loadBookings()">Refresh Booking List</button>
 </body>
 </html>
