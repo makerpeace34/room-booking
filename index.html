@@ -50,7 +50,7 @@
         .user-badge-zone {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             background: rgba(255, 255, 255, 0.15);
             padding: 8px 15px;
             border-radius: 30px;
@@ -155,6 +155,18 @@
         }
         .btn-danger:hover { background-color: #bd2130; }
 
+        .btn-action {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 4px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .btn-action:hover { background-color: white; color: #004a99; }
+
         .btn-logout {
             background-color: #fff;
             color: #dc3545;
@@ -249,14 +261,30 @@
     <div class="header">
         <h2>URUSARO DEPARTMENT CLINICAL ROOM BOOKING REGISTER</h2>
         <div class="user-badge-zone">
-            <span>Logged in: <b id="displayUser">admin</b></span>
+            <span>User: <b id="displayUser">admin</b></span>
+            <button class="btn-action" onclick="togglePasswordPanel()">🔑 Change My Password</button>
             <button class="btn-logout" onclick="handleSignOut()">Sign Out</button>
+        </div>
+    </div>
+
+    <div id="passwordResetPanel" class="card" style="display: none; border: 2px solid #ffc107; background: #fffdf5;">
+        <h3 style="color: #856404; margin-bottom: 5px;">🔑 Self-Service: Update Your Password</h3>
+        <p style="font-size: 0.85rem; color: #6c757d; margin-bottom: 15px;">Modify your secure access key phrase below. Your administrator will instantly see this updated key phrase.</p>
+        <div class="form-grid" style="align-items: flex-end;">
+            <div class="form-group">
+                <label>Type New Security Password</label>
+                <input type="password" id="selfNewPass" placeholder="Enter new password">
+            </div>
+            <div class="form-group">
+                <button class="btn-primary" style="background-color: #e0a800;" onclick="changeOwnPassword()">Update Password Key</button>
+                <button class="btn-secondary" onclick="togglePasswordPanel()">Cancel</button>
+            </div>
         </div>
     </div>
 
     <div class="card" id="adminControlPanel" style="display: none; border: 2px dashed #004a99; background: #f0f7ff;">
         <h2 style="color: #002b5c;">🛠️ Admin Command Console (Staff Account Management)</h2>
-        <p style="font-size:0.9rem; margin-top:-10px; color:#475569;">As admin, you can dynamically register or revoke staff profiles below.</p>
+        <p style="font-size:0.9rem; margin-top:-10px; color:#475569;">As admin, you have master access to audit, create, or see live credentials across all profiles.</p>
         
         <div class="form-grid" style="align-items: flex-end; margin-bottom: 20px;">
             <div class="form-group">
@@ -272,13 +300,13 @@
             </div>
         </div>
 
-        <h3>Active Registered Accounts</h3>
+        <h3>Active Registered Accounts (Live Master Directory)</h3>
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
                         <th>Username</th>
-                        <th>Password Access Phrase</th>
+                        <th>Live Password Access Phrase</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -366,11 +394,10 @@
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwlsZwKW8g8y8ARStSivQ4ernhKPK15DxJiGjv3-GLJ4pZo4UfXEgA2XVobafRQCoQ8JQ/exec'; 
     let currentUser = "";
 
-    // 1. Database Initialization Strategy (Local Database Engine Emulation)
+    // 1. Database Initialization Strategy
     function getStaffDatabase() {
         let db = localStorage.getItem('URUSARO_STAFF_DB');
         if (!db) {
-            // Default Master Database Setup if nothing exists yet
             const defaultDB = [
                 { username: "admin", password: "password123" }
             ];
@@ -380,7 +407,7 @@
         return JSON.parse(db);
     }
 
-    // 2. Gatekeeper Authentication Layer (Sign In Execution)
+    // 2. Gatekeeper Authentication Layer
     function verifyAccess() {
         const userInput = document.getElementById('staffUsername').value.trim();
         const passInput = document.getElementById('staffPassword').value;
@@ -393,13 +420,12 @@
             currentUser = verifiedUser.username;
             errorLabel.style.display = 'none';
             
-            // Logged-in setup configurations
             document.getElementById('lockScreen').style.display = 'none';
             document.getElementById('dashboardContent').style.display = 'block';
             document.getElementById('displayUser').innerText = currentUser;
-            document.getElementById('autoBookerField').value = currentUser; // auto-fill who booked it
+            document.getElementById('autoBookerField').value = currentUser;
 
-            // Security check: Only show Account Control panel to master 'admin' account
+            // Display Admin tools exclusively to master configuration
             if(currentUser.toLowerCase() === 'admin') {
                 document.getElementById('adminControlPanel').style.display = 'block';
                 renderAdminStaffTable();
@@ -414,16 +440,47 @@
         }
     }
 
-    // 3. Clear Session Storage Layer (Sign Out Execution)
+    // 3. Clear Session Layer
     function handleSignOut() {
         currentUser = "";
         document.getElementById('staffUsername').value = "";
         document.getElementById('staffPassword').value = "";
+        document.getElementById('passwordResetPanel').style.display = 'none';
         document.getElementById('dashboardContent').style.display = 'none';
         document.getElementById('lockScreen').style.display = 'flex';
     }
 
-    // 4. Admin Management Controls Profile Generation (Sign Up Core Engine)
+    // 4. Self-Service Password Manager Functions
+    function togglePasswordPanel() {
+        const panel = document.getElementById('passwordResetPanel');
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        document.getElementById('selfNewPass').value = '';
+    }
+
+    function changeOwnPassword() {
+        const newPass = document.getElementById('selfNewPass').value.trim();
+        if(!newPass) {
+            alert("Password text cannot be left empty.");
+            return;
+        }
+
+        let currentDB = getStaffDatabase();
+        let targetIndex = currentDB.findIndex(user => user.username.toLowerCase() === currentUser.toLowerCase());
+
+        if(targetIndex !== -1) {
+            currentDB[targetIndex].password = newPass;
+            localStorage.setItem('URUSARO_STAFF_DB', JSON.stringify(currentDB));
+            alert("Success! Your access password has been updated.");
+            togglePasswordPanel();
+            
+            // Re-render table if the active editor is the admin
+            if(currentUser.toLowerCase() === 'admin') {
+                renderAdminStaffTable();
+            }
+        }
+    }
+
+    // 5. Admin Sign Up Core Engine
     function registerNewStaff() {
         const userIn = document.getElementById('newStaffUser').value.trim();
         const passIn = document.getElementById('newStaffPass').value.trim();
@@ -435,7 +492,6 @@
 
         let currentDB = getStaffDatabase();
         
-        // Block duplicates
         if(currentDB.some(user => user.username.toLowerCase() === userIn.toLowerCase())) {
             alert('An account profile with that exact user identity string already exists!');
             return;
@@ -450,7 +506,6 @@
         renderAdminStaffTable();
     }
 
-    // Delete staff account profiles
     function deleteStaffAccount(usernameToDelete) {
         if(usernameToDelete.toLowerCase() === 'admin') {
             alert('Security Failure: Master admin structural account configuration cannot be removed.');
@@ -465,7 +520,6 @@
         }
     }
 
-    // Render Admin Control view
     function renderAdminStaffTable() {
         const tableBody = document.getElementById('adminStaffTableBody');
         const currentDB = getStaffDatabase();
@@ -486,7 +540,7 @@
         });
     }
 
-    // 5. Native Functional Forms & Sheets Pipelines
+    // 6. Native Functional Forms & Sheets Pipelines
     const form = document.getElementById('bookingForm');
     const submitBtn = document.getElementById('submitBtn');
 
@@ -501,7 +555,7 @@
         .then(response => {
             alert('Success! Patient room booked securely.');
             form.reset();
-            document.getElementById('autoBookerField').value = currentUser; // re-populate current user
+            document.getElementById('autoBookerField').value = currentUser;
             submitBtn.innerText = "Submit Booking";
             submitBtn.disabled = false;
             loadBookings(); 
@@ -579,7 +633,6 @@
         }
     }
 
-    // Pre-initialize internal database structure on browser load
     getStaffDatabase();
 </script>
 </body>
