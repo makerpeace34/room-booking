@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Room Register</title>
+    <style>
+        /* Base Reset & Hospital Environment Background Image */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* High-quality, clean hospital room/medical device background */
+            background-image: linear-gradient(rgba(238, 245, 246, 0.85), rgba(238, 245, 246, 0.85)), 
+                              url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1600');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 30px 15px;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        /* Container Layout */
+        .wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Modern Medical Header */
+        .header {
+            background: linear-gradient(135deg, #004a99 0%, #0066cc 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 74, 153, 0.15);
+            border-bottom: 4px solid #002b5c;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Card Elements with slight translucent glass effect */
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            backdrop-filter: blur(8px);
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .card h2, .card h3 {
+            margin-top: 0;
+            color: #004a99;
+            border-bottom: 2px solid #eef5f6;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Form Grid Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            background-color: #fafbfb;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #004a99;
+            box-shadow: 0 0 0 3px rgba(0, 74, 153, 0.15);
+            background-color: #fff;
+        }
+
+        /* Buttons styling */
+        .btn-primary {
+            background-color: #004a99;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            width: auto;
+        }
+
+        .btn-primary:hover {
+            background-color: #003366;
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #334155;
+            padding: 10px 20px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        /* Data Tables styling */
+        .table-container {
+            overflow-x: auto;
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            background-color: white;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            padding: 12px;
+            border-bottom: 2px solid #cbd5e1;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        td input[type="text"] {
+            padding: 6px 10px;
+            margin: 0;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="header">
+        <h2>URUSARO DEPARTMENT CLINICAL ROOM BOOKING REGISTER</h2>
+    </div>
+
+    <div class="card">
+        <h2>Book a Patient Room</h2>
+        <form id="bookingForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Patient Name</label>
+                    <input type="text" name="name" required placeholder="Enter names">
+                </div>
+                <div class="form-group">
+                    <label>Service</label>
+                    <input type="text" name="service" required placeholder="Enter the requesting service">
+                </div>
+                <div class="form-group">
+                    <label>Type of Room</label>
+                    <select name="roomType" required>
+                        <option value="Big room">Big room</option>
+                        <option value="Small room">Small room</option>
+                        <option value="Any room">Any room</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date of Admission</label>
+                    <input type="date" name="admissionDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" name="phone" required placeholder="Enter telephone">
+                </div>
+                <div class="form-group full-width">
+                    <label>Requested by</label>
+                    <input type="text" name="booker" required placeholder="Dr. / Nurse Name">
+                </div>
+                <div class="form-group full-width">
+                    <label>Observation</label>
+                    <textarea name="observation" rows="3" placeholder="Enter special clinical notes or requirements..."></textarea>
+                </div>
+            </div>
+            
+            <button type="submit" id="submitBtn" class="btn-primary">Submit Booking</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Current Room Bookings (Read-Only)</h3>
+        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="🔍 Search for patient name..." style="width: 100%; padding: 12px; margin-bottom: 15px;">
+        
+        <div class="table-container">
+            <table id="bookingsTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Names</th>
+                        <th>Service</th>
+                        <th>Type of Room</th>
+                        <th>Admission Date</th>
+                        <th>Phone</th>
+                        <th>Requested by</th> 
+                        <th>Observation</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <button onclick="loadBookings()" class="btn-secondary">🔄 Refresh Booking List</button>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('bookingForm');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwlsZwKW8g8y8ARStSivQ4ernhKPK15DxJiGjv3-GLJ4pZo4UfXEgA2XVobafRQCoQ8JQ/exec'; 
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        submitBtn.innerText = "Submitting...";
+        submitBtn.disabled = true;
+
+        const data = new URLSearchParams(new FormData(form));
+
+        fetch(scriptURL, { 
+            method: 'POST', 
+            body: data
+        })
+        .then(response => {
+            alert('Success! Patient room booked securely.');
+            form.reset();
+            submitBtn.innerText = "Submit Booking";
+            submitBtn.disabled = false;
+            loadBookings(); 
+        })
+        .catch(error => {
+            console.error('Error!', error.message);
+            alert('There was an error.');
+            submitBtn.innerText = "Submit Booking";
+            submitBtn.disabled = false;
+        });
+    });
+
+    function loadBookings() {
+        const tableBody = document.getElementById('tableBody');
+        
+        fetch(scriptURL)
+            .then(res => res.json())
+            .then(data => {
+                tableBody.innerHTML = ''; 
+                
+                if (data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">No bookings found.</td></tr>';
+                    return;
+                }
+
+                data.forEach((row, index) => { 
+                    const tr = document.createElement('tr');
+                    
+                    for(let i = 0; i < 8; i++) {
+                        const td = document.createElement('td');
+                        
+                        if (i === 7) { 
+                            const input = document.createElement('input');
+                            input.type = "text";
+                            input.value = row[i] || '';
+                            input.onchange = function() {
+                                updateObservation(index + 1, this.value); 
+                            };
+                            td.appendChild(input);
+                        } else {
+                            td.innerText = row[i] || '-';
+                        }
+                        tr.appendChild(td);
+                    }
+                    tableBody.appendChild(tr);
+                });
+            })
+            .catch(err => {
+                console.error("Fetch Error:", err);
+                tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:red; padding:20px;">Error loading data.</td></tr>';
+            });
+    }
+
+    function updateObservation(rowNumber, newNote) {
+        const formData = new FormData();
+        formData.append('action', 'update');
+        formData.append('row', rowNumber);
+        formData.append('observation', newNote);
+
+        fetch(scriptURL, { method: 'POST', body: new URLSearchParams(formData) })
+            .then(() => console.log("Observation updated for row " + rowNumber))
+            .catch(err => alert("Error updating note."));
+    }
+
+    window.onload = loadBookings;
+
+    function searchTable() {
+        const input = document.getElementById("searchInput");
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById("bookingsTable");
+        const tr = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < tr.length; i++) {
+            const td = tr[i].getElementsByTagName("td")[1]; 
+            if (td) {
+                const txtValue = td.textContent || td.innerText;
+                tr[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+            }
+        }
+    }
+</script>
+</body>
+</html>
