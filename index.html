@@ -8,7 +8,6 @@
         /* Base Reset & Hospital Environment Background Image */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* High-quality, clean hospital room/medical device background */
             background-image: linear-gradient(rgba(238, 245, 246, 0.85), rgba(238, 245, 246, 0.85)), 
                               url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1600');
             background-size: cover;
@@ -29,19 +28,33 @@
         .header {
             background: linear-gradient(135deg, #004a99 0%, #0066cc 100%);
             color: white;
-            padding: 30px;
-            text-align: center;
+            padding: 25px 30px;
             border-radius: 12px;
             margin-bottom: 30px;
             box-shadow: 0 4px 15px rgba(0, 74, 153, 0.15);
             border-bottom: 4px solid #002b5c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .header h2 {
             margin: 0;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             letter-spacing: 1px;
             font-weight: 600;
+        }
+
+        .user-badge-zone {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
         }
 
         /* Card Elements with slight translucent glass effect */
@@ -112,15 +125,12 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             transition: background-color 0.2s;
-            width: auto;
         }
 
-        .btn-primary:hover {
-            background-color: #003366;
-        }
+        .btn-primary:hover { background-color: #003366; }
 
         .btn-secondary {
             background-color: #e2e8f0;
@@ -130,12 +140,33 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
-            margin-top: 15px;
         }
+        .btn-secondary:hover { background-color: #cbd5e1; }
 
-        .btn-secondary:hover {
-            background-color: #cbd5e1;
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
         }
+        .btn-danger:hover { background-color: #bd2130; }
+
+        .btn-logout {
+            background-color: #fff;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .btn-logout:hover { background-color: #dc3545; color: white; }
 
         /* Data Tables styling */
         .table-container {
@@ -167,22 +198,94 @@
             color: #475569;
         }
 
-        tr:hover {
-            background-color: #f8fafc;
+        tr:hover { background-color: #f8fafc; }
+
+        /* Secure Login Gateway Screen Overlays */
+        #lockScreen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #002b5c 0%, #001530 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
         }
 
-        td input[type="text"] {
-            padding: 6px 10px;
-            margin: 0;
-            font-size: 0.85rem;
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
     </style>
 </head>
 <body>
 
-<div class="wrapper">
+<div id="lockScreen">
+    <div class="login-box">
+        <h2 style="color: #004a99; margin-bottom: 10px; border:none; padding:0;">Urusaro Registry Login</h2>
+        <p style="color: #6c757d; font-size: 0.9rem; margin-bottom: 25px;">Sign in with your staff credentials to access the booker.</p>
+        
+        <div class="form-group" style="text-align: left;">
+            <label>Username</label>
+            <input type="text" id="staffUsername" placeholder="Username" style="font-size: 1rem;">
+        </div>
+        
+        <div class="form-group" style="text-align: left;">
+            <label>Password</label>
+            <input type="password" id="staffPassword" placeholder="••••••••" style="font-size: 1rem;">
+        </div>
+        
+        <button class="btn-primary" style="width:100%;" onclick="verifyAccess()">Sign In</button>
+        <p id="loginError" style="color: #dc3545; font-size: 0.85rem; margin-top: 15px; display: none;">⚠️ Invalid credentials.</p>
+    </div>
+</div>
+
+<div class="wrapper" id="dashboardContent" style="display: none;">
+    
     <div class="header">
         <h2>URUSARO DEPARTMENT CLINICAL ROOM BOOKING REGISTER</h2>
+        <div class="user-badge-zone">
+            <span>Logged in: <b id="displayUser">admin</b></span>
+            <button class="btn-logout" onclick="handleSignOut()">Sign Out</button>
+        </div>
+    </div>
+
+    <div class="card" id="adminControlPanel" style="display: none; border: 2px dashed #004a99; background: #f0f7ff;">
+        <h2 style="color: #002b5c;">🛠️ Admin Command Console (Staff Account Management)</h2>
+        <p style="font-size:0.9rem; margin-top:-10px; color:#475569;">As admin, you can dynamically register or revoke staff profiles below.</p>
+        
+        <div class="form-grid" style="align-items: flex-end; margin-bottom: 20px;">
+            <div class="form-group">
+                <label>New Staff Username</label>
+                <input type="text" id="newStaffUser" placeholder="e.g., nurse_mary">
+            </div>
+            <div class="form-group">
+                <label>Assign Password</label>
+                <input type="text" id="newStaffPass" placeholder="e.g., secure99">
+            </div>
+            <div class="form-group">
+                <button class="btn-primary" onclick="registerNewStaff()">➕ Create Staff Profile (Sign Up)</button>
+            </div>
+        </div>
+
+        <h3>Active Registered Accounts</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Password Access Phrase</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="adminStaffTableBody">
+                    </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="card">
@@ -219,7 +322,7 @@
                 </div>
                 <div class="form-group full-width">
                     <label>Requested by</label>
-                    <input type="text" name="booker" required placeholder="Dr. / Nurse Name">
+                    <input type="text" name="booker" id="autoBookerField" required placeholder="Dr. / Nurse Name">
                 </div>
                 <div class="form-group full-width">
                     <label>Observation</label>
@@ -253,15 +356,139 @@
             </table>
         </div>
 
-        <button onclick="loadBookings()" class="btn-secondary">🔄 Refresh Booking List</button>
+        <div style="margin-top: 15px; display: flex; gap: 10px;">
+            <button onclick="loadBookings()" class="btn-secondary">🔄 Refresh Booking List</button>
+        </div>
     </div>
 </div>
 
 <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwlsZwKW8g8y8ARStSivQ4ernhKPK15DxJiGjv3-GLJ4pZo4UfXEgA2XVobafRQCoQ8JQ/exec'; 
+    let currentUser = "";
+
+    // 1. Database Initialization Strategy (Local Database Engine Emulation)
+    function getStaffDatabase() {
+        let db = localStorage.getItem('URUSARO_STAFF_DB');
+        if (!db) {
+            // Default Master Database Setup if nothing exists yet
+            const defaultDB = [
+                { username: "admin", password: "password123" }
+            ];
+            localStorage.setItem('URUSARO_STAFF_DB', JSON.stringify(defaultDB));
+            return defaultDB;
+        }
+        return JSON.parse(db);
+    }
+
+    // 2. Gatekeeper Authentication Layer (Sign In Execution)
+    function verifyAccess() {
+        const userInput = document.getElementById('staffUsername').value.trim();
+        const passInput = document.getElementById('staffPassword').value;
+        const errorLabel = document.getElementById('loginError');
+
+        const currentDB = getStaffDatabase();
+        const verifiedUser = currentDB.find(user => user.username.toLowerCase() === userInput.toLowerCase() && user.password === passInput);
+
+        if (verifiedUser) {
+            currentUser = verifiedUser.username;
+            errorLabel.style.display = 'none';
+            
+            // Logged-in setup configurations
+            document.getElementById('lockScreen').style.display = 'none';
+            document.getElementById('dashboardContent').style.display = 'block';
+            document.getElementById('displayUser').innerText = currentUser;
+            document.getElementById('autoBookerField').value = currentUser; // auto-fill who booked it
+
+            // Security check: Only show Account Control panel to master 'admin' account
+            if(currentUser.toLowerCase() === 'admin') {
+                document.getElementById('adminControlPanel').style.display = 'block';
+                renderAdminStaffTable();
+            } else {
+                document.getElementById('adminControlPanel').style.display = 'none';
+            }
+
+            loadBookings();
+        } else {
+            errorLabel.style.display = 'block';
+            document.getElementById('staffPassword').value = '';
+        }
+    }
+
+    // 3. Clear Session Storage Layer (Sign Out Execution)
+    function handleSignOut() {
+        currentUser = "";
+        document.getElementById('staffUsername').value = "";
+        document.getElementById('staffPassword').value = "";
+        document.getElementById('dashboardContent').style.display = 'none';
+        document.getElementById('lockScreen').style.display = 'flex';
+    }
+
+    // 4. Admin Management Controls Profile Generation (Sign Up Core Engine)
+    function registerNewStaff() {
+        const userIn = document.getElementById('newStaffUser').value.trim();
+        const passIn = document.getElementById('newStaffPass').value.trim();
+
+        if(!userIn || !passIn) {
+            alert('Please supply both a registration username and validation password phrase.');
+            return;
+        }
+
+        let currentDB = getStaffDatabase();
+        
+        // Block duplicates
+        if(currentDB.some(user => user.username.toLowerCase() === userIn.toLowerCase())) {
+            alert('An account profile with that exact user identity string already exists!');
+            return;
+        }
+
+        currentDB.push({ username: userIn, password: passIn });
+        localStorage.setItem('URUSARO_STAFF_DB', JSON.stringify(currentDB));
+        
+        alert(`Account created successfully for: ${userIn}`);
+        document.getElementById('newStaffUser').value = "";
+        document.getElementById('newStaffPass').value = "";
+        renderAdminStaffTable();
+    }
+
+    // Delete staff account profiles
+    function deleteStaffAccount(usernameToDelete) {
+        if(usernameToDelete.toLowerCase() === 'admin') {
+            alert('Security Failure: Master admin structural account configuration cannot be removed.');
+            return;
+        }
+
+        if(confirm(`Are you certain you want to completely revoke register database access for user: ${usernameToDelete}?`)) {
+            let currentDB = getStaffDatabase();
+            currentDB = currentDB.filter(user => user.username.toLowerCase() !== usernameToDelete.toLowerCase());
+            localStorage.setItem('URUSARO_STAFF_DB', JSON.stringify(currentDB));
+            renderAdminStaffTable();
+        }
+    }
+
+    // Render Admin Control view
+    function renderAdminStaffTable() {
+        const tableBody = document.getElementById('adminStaffTableBody');
+        const currentDB = getStaffDatabase();
+        tableBody.innerHTML = "";
+
+        currentDB.forEach(user => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><b>${user.username}</b></td>
+                <td><code>${user.password}</code></td>
+                <td>
+                    ${user.username.toLowerCase() === 'admin' ? 
+                    '<span style="color:gray; font-size:0.8rem;">Master Profile</span>' : 
+                    `<button class="btn-danger" onclick="deleteStaffAccount('${user.username}')">Revoke Profile</button>`}
+                </td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    // 5. Native Functional Forms & Sheets Pipelines
     const form = document.getElementById('bookingForm');
     const submitBtn = document.getElementById('submitBtn');
-    
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwlsZwKW8g8y8ARStSivQ4ernhKPK15DxJiGjv3-GLJ4pZo4UfXEgA2XVobafRQCoQ8JQ/exec'; 
 
     form.addEventListener('submit', e => {
         e.preventDefault();
@@ -270,13 +497,11 @@
 
         const data = new URLSearchParams(new FormData(form));
 
-        fetch(scriptURL, { 
-            method: 'POST', 
-            body: data
-        })
+        fetch(scriptURL, { method: 'POST', body: data })
         .then(response => {
             alert('Success! Patient room booked securely.');
             form.reset();
+            document.getElementById('autoBookerField').value = currentUser; // re-populate current user
             submitBtn.innerText = "Submit Booking";
             submitBtn.disabled = false;
             loadBookings(); 
@@ -291,12 +516,12 @@
 
     function loadBookings() {
         const tableBody = document.getElementById('tableBody');
+        tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">Fetching server registry files...</td></tr>';
         
         fetch(scriptURL)
             .then(res => res.json())
             .then(data => {
                 tableBody.innerHTML = ''; 
-                
                 if (data.length === 0) {
                     tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">No bookings found.</td></tr>';
                     return;
@@ -304,10 +529,8 @@
 
                 data.forEach((row, index) => { 
                     const tr = document.createElement('tr');
-                    
                     for(let i = 0; i < 8; i++) {
                         const td = document.createElement('td');
-                        
                         if (i === 7) { 
                             const input = document.createElement('input');
                             input.type = "text";
@@ -341,8 +564,6 @@
             .catch(err => alert("Error updating note."));
     }
 
-    window.onload = loadBookings;
-
     function searchTable() {
         const input = document.getElementById("searchInput");
         const filter = input.value.toUpperCase();
@@ -357,6 +578,9 @@
             }
         }
     }
+
+    // Pre-initialize internal database structure on browser load
+    getStaffDatabase();
 </script>
 </body>
 </html>
