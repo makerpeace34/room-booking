@@ -2,37 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Patient Room Register</title>
+
     <style>
-        /* Base Reset & Hospital Environment Background Image */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: linear-gradient(rgba(238, 245, 246, 0.85), rgba(238, 245, 246, 0.85)), 
-                              url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1600');
+            font-family:
+                "Segoe UI",
+                Tahoma,
+                Geneva,
+                Verdana,
+                sans-serif;
+
+            background-image:
+                linear-gradient(
+                    rgba(238, 245, 246, 0.88),
+                    rgba(238, 245, 246, 0.88)
+                ),
+                url(
+                    "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1600"
+                );
+
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+
             padding: 30px 15px;
             color: #2c3e50;
             margin: 0;
         }
 
-        /* Container Layout */
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
         .wrapper {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
-        /* Modern Medical Header */
         .header {
-            background: linear-gradient(135deg, #004a99 0%, #0066cc 100%);
+            background:
+                linear-gradient(
+                    135deg,
+                    #004a99 0%,
+                    #0066cc 100%
+                );
+
             color: white;
             padding: 25px 30px;
             border-radius: 12px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0, 74, 153, 0.15);
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 74, 153, 0.15);
+
             border-bottom: 4px solid #002b5c;
+
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -42,44 +81,65 @@
 
         .header h2 {
             margin: 0;
-            font-size: 1.4rem;
-            letter-spacing: 1px;
+            font-size: 1.35rem;
+            letter-spacing: 0.8px;
             font-weight: 600;
         }
 
         .user-badge-zone {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.15);
+            flex-wrap: wrap;
+            gap: 10px;
+
+            background:
+                rgba(255, 255, 255, 0.15);
+
             padding: 8px 15px;
             border-radius: 30px;
             font-size: 0.9rem;
         }
 
-        /* Card Elements with slight translucent glass effect */
         .card {
-            background: rgba(255, 255, 255, 0.92);
+            background:
+                rgba(255, 255, 255, 0.94);
+
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+
+            box-shadow:
+                0 8px 24px
+                rgba(0, 0, 0, 0.1);
+
             backdrop-filter: blur(8px);
             margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.5);
         }
 
-        .card h2, .card h3 {
+        .card h2,
+        .card h3 {
             margin-top: 0;
             color: #004a99;
-            border-bottom: 2px solid #eef5f6;
+
+            border-bottom:
+                2px solid #eef5f6;
+
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
 
-        /* Form Grid Layout */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(220px, 1fr)
+                );
+
             gap: 15px;
         }
 
@@ -99,99 +159,158 @@
             color: #4a5568;
         }
 
-        input, select, textarea {
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 10px 12px;
-            border: 1px solid #cbd5e1;
+
+            border:
+                1px solid #cbd5e1;
+
             border-radius: 6px;
-            box-sizing: border-box;
             font-size: 0.95rem;
-            transition: all 0.2s;
+
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s;
+
             background-color: #fafbfb;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
             border-color: #004a99;
-            box-shadow: 0 0 0 3px rgba(0, 74, 153, 0.15);
-            background-color: #fff;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(0, 74, 153, 0.15);
+
+            background-color: white;
         }
 
-        /* Buttons styling */
+        textarea {
+            resize: vertical;
+        }
+
+        button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
         .btn-primary {
             background-color: #004a99;
             color: white;
+
             padding: 12px 24px;
             border: none;
             border-radius: 6px;
+
             cursor: pointer;
             font-size: 15px;
             font-weight: 600;
-            transition: background-color 0.2s;
         }
 
-        .btn-primary:hover { background-color: #003366; }
+        .btn-primary:hover:not(:disabled) {
+            background-color: #003366;
+        }
 
         .btn-secondary {
             background-color: #e2e8f0;
             color: #334155;
+
             padding: 10px 20px;
-            border: 1px solid #cbd5e1;
+
+            border:
+                1px solid #cbd5e1;
+
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
         }
-        .btn-secondary:hover { background-color: #cbd5e1; }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #cbd5e1;
+        }
 
         .btn-danger {
             background-color: #dc3545;
             color: white;
+
             border: none;
-            padding: 6px 12px;
+            padding: 7px 12px;
             border-radius: 4px;
+
             cursor: pointer;
             font-weight: 600;
             font-size: 0.8rem;
         }
-        .btn-danger:hover { background-color: #bd2130; }
+
+        .btn-danger:hover:not(:disabled) {
+            background-color: #bd2130;
+        }
 
         .btn-action {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color:
+                rgba(255, 255, 255, 0.2);
+
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 4px 12px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.4);
+
+            padding: 5px 12px;
             border-radius: 15px;
+
             cursor: pointer;
             font-size: 0.8rem;
             font-weight: 600;
         }
-        .btn-action:hover { background-color: white; color: #004a99; }
+
+        .btn-action:hover {
+            background-color: white;
+            color: #004a99;
+        }
 
         .btn-logout {
-            background-color: #fff;
+            background-color: white;
             color: #dc3545;
-            border: 1px solid #dc3545;
+
+            border:
+                1px solid #dc3545;
+
             padding: 6px 14px;
             border-radius: 20px;
+
             cursor: pointer;
             font-weight: bold;
             font-size: 0.85rem;
-            transition: all 0.2s;
         }
-        .btn-logout:hover { background-color: #dc3545; color: white; }
 
-        /* Data Tables styling */
+        .btn-logout:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
         .table-container {
             overflow-x: auto;
             width: 100%;
             border-radius: 8px;
-            border: 1px solid #e2e8f0;
+
+            border:
+                1px solid #e2e8f0;
         }
 
         table {
             width: 100%;
+            min-width: 800px;
+
             border-collapse: collapse;
             text-align: left;
+
             background-color: white;
             font-size: 0.9rem;
         }
@@ -200,440 +319,1788 @@
             background-color: #f1f5f9;
             color: #334155;
             font-weight: 600;
+
             padding: 12px;
-            border-bottom: 2px solid #cbd5e1;
+
+            border-bottom:
+                2px solid #cbd5e1;
+
+            white-space: nowrap;
         }
 
         td {
             padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
+
+            border-bottom:
+                1px solid #e2e8f0;
+
             color: #475569;
+            vertical-align: top;
         }
 
-        tr:hover { background-color: #f8fafc; }
+        tr:hover {
+            background-color: #f8fafc;
+        }
 
-        /* Secure Login Gateway Screen Overlays */
+        .observation-input {
+            min-width: 220px;
+        }
+
         #lockScreen {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #002b5c 0%, #001530 100%);
+            inset: 0;
+
+            width: 100%;
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #002b5c 0%,
+                    #001530 100%
+                );
+
             display: flex;
             justify-content: center;
             align-items: center;
+
             z-index: 10000;
+            padding: 20px;
         }
 
         .login-box {
             background: white;
             padding: 40px;
             border-radius: 12px;
+
             width: 100%;
             max-width: 380px;
+
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+
+            box-shadow:
+                0 15px 35px
+                rgba(0, 0, 0, 0.3);
+        }
+
+        .login-box h2 {
+            color: #004a99;
+            margin: 0 0 10px;
+        }
+
+        .login-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .message {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+        }
+
+        .message.error {
+            display: block;
+            color: #842029;
+            background-color: #f8d7da;
+
+            border:
+                1px solid #f5c2c7;
+        }
+
+        .message.success {
+            display: block;
+            color: #0f5132;
+            background-color: #d1e7dd;
+
+            border:
+                1px solid #badbcc;
+        }
+
+        .message.info {
+            display: block;
+            color: #055160;
+            background-color: #cff4fc;
+
+            border:
+                1px solid #b6effb;
+        }
+
+        .admin-card {
+            border:
+                2px dashed #004a99;
+
+            background: #f0f7ff;
+        }
+
+        .password-card {
+            border:
+                2px solid #ffc107;
+
+            background: #fffdf5;
+        }
+
+        .small-note {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .table-status {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .status-error {
+            color: #dc3545;
+        }
+
+        .status-success {
+            color: #198754;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 15px 8px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .login-box {
+                padding: 30px 22px;
+            }
+
+            .user-badge-zone {
+                border-radius: 12px;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<div id="lockScreen">
-    <div class="login-box">
-        <h2 style="color: #004a99; margin-bottom: 10px; border:none; padding:0;">Urusaro Registry Login</h2>
-        <p style="color: #6c757d; font-size: 0.9rem; margin-bottom: 25px;">Sign in with your staff credentials to access the booker.</p>
-        
-        <div class="form-group" style="text-align: left;">
-            <label>Username</label>
-            <input type="text" id="staffUsername" placeholder="Username" style="font-size: 1rem;">
+    <!-- LOGIN SCREEN -->
+    <div id="lockScreen">
+        <div class="login-box">
+
+            <h2>Urusaro Registry Login</h2>
+
+            <p class="login-description">
+                Sign in with your live staff credentials.
+            </p>
+
+            <div
+                class="form-group"
+                style="text-align: left;"
+            >
+                <label for="staffUsername">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="staffUsername"
+                    placeholder="Username"
+                    autocomplete="username"
+                >
+            </div>
+
+            <div
+                class="form-group"
+                style="text-align: left;"
+            >
+                <label for="staffPassword">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="staffPassword"
+                    placeholder="••••••••"
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <button
+                type="button"
+                id="loginButton"
+                class="btn-primary"
+                style="width: 100%;"
+                onclick="verifyAccess()"
+            >
+                Sign In
+            </button>
+
+            <div
+                id="loginMessage"
+                class="message"
+            ></div>
+
         </div>
-        
-        <div class="form-group" style="text-align: left;">
-            <label>Password</label>
-            <input type="password" id="staffPassword" placeholder="••••••••" style="font-size: 1rem;">
-        </div>
-        
-        <button class="btn-primary" style="width:100%;" onclick="verifyAccess()">Sign In</button>
-        <p id="loginError" style="color: #dc3545; font-size: 0.85rem; margin-top: 15px; display: none;">⚠️ Invalid credentials.</p>
     </div>
-</div>
 
-<div class="wrapper" id="dashboardContent" style="display: none;">
-    
-    <div class="header">
-        <h2>URUSARO DEPARTMENT CLINICAL ROOM BOOKING REGISTER</h2>
-        <div class="user-badge-zone">
-            <span>User: <b id="displayUser">admin</b></span>
-            <button class="btn-action" onclick="togglePasswordPanel()">🔑 Change My Password</button>
-            <button class="btn-logout" onclick="handleSignOut()">Sign Out</button>
-        </div>
-    </div>
 
-    <div id="passwordResetPanel" class="card" style="display: none; border: 2px solid #ffc107; background: #fffdf5;">
-        <h3 style="color: #856404; margin-bottom: 5px;">🔑 Self-Service: Update Your Password</h3>
-        <p style="font-size: 0.85rem; color: #6c757d; margin-bottom: 15px;">Modify your secure access key phrase below. Your administrator will instantly see this updated key phrase.</p>
-        <div class="form-grid" style="align-items: flex-end;">
-            <div class="form-group">
-                <label>Type New Security Password</label>
-                <input type="password" id="selfNewPass" placeholder="Enter new password">
-            </div>
-            <div class="form-group">
-                <button class="btn-primary" style="background-color: #e0a800;" onclick="changeOwnPassword()">Update Password Key</button>
-                <button class="btn-secondary" onclick="togglePasswordPanel()">Cancel</button>
-            </div>
-        </div>
-    </div>
+    <!-- DASHBOARD -->
+    <div
+        class="wrapper"
+        id="dashboardContent"
+        style="display: none;"
+    >
 
-    <div class="card" id="adminControlPanel" style="display: none; border: 2px dashed #004a99; background: #f0f7ff;">
-        <h2 style="color: #002b5c;">🛠️ Admin Command Console (Staff Account Management)</h2>
-        <p style="font-size:0.9rem; margin-top:-10px; color:#475569;">As admin, you have master access to audit, create, or see live credentials across all profiles.</p>
-        
-        <div class="form-grid" style="align-items: flex-end; margin-bottom: 20px;">
-            <div class="form-group">
-                <label>New Staff Username</label>
-                <input type="text" id="newStaffUser" placeholder="e.g., nurse_mary">
-            </div>
-            <div class="form-group">
-                <label>Assign Password</label>
-                <input type="text" id="newStaffPass" placeholder="e.g., secure99">
-            </div>
-            <div class="form-group">
-                <button class="btn-primary" onclick="registerNewStaff()">➕ Create Staff Profile (Sign Up)</button>
+        <div class="header">
+
+            <h2>
+                URUSARO DEPARTMENT CLINICAL ROOM BOOKING REGISTER
+            </h2>
+
+            <div class="user-badge-zone">
+
+                <span>
+                    User:
+                    <strong id="displayUser"></strong>
+                </span>
+
+                <button
+                    type="button"
+                    class="btn-action"
+                    onclick="togglePasswordPanel()"
+                >
+                    Change My Password
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-logout"
+                    onclick="handleSignOut()"
+                >
+                    Sign Out
+                </button>
+
             </div>
         </div>
 
-        <h3>Active Registered Accounts (Live Master Directory)</h3>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Live Password Access Phrase</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="adminStaffTableBody">
+
+        <!-- PASSWORD PANEL -->
+        <div
+            id="passwordResetPanel"
+            class="card password-card"
+            style="display: none;"
+        >
+
+            <h3>
+                Change Your Password
+            </h3>
+
+            <p class="small-note">
+                The new password will be saved in the central
+                Staff sheet and will work on every device.
+            </p>
+
+            <div
+                class="form-grid"
+                style="align-items: end;"
+            >
+
+                <div class="form-group">
+                    <label for="selfNewPass">
+                        New password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="selfNewPass"
+                        placeholder="At least 6 characters"
+                        autocomplete="new-password"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmNewPass">
+                        Confirm new password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmNewPass"
+                        placeholder="Repeat new password"
+                        autocomplete="new-password"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <button
+                        type="button"
+                        id="changePasswordButton"
+                        class="btn-primary"
+                        onclick="changeOwnPassword()"
+                    >
+                        Update Password
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn-secondary"
+                        onclick="togglePasswordPanel()"
+                    >
+                        Cancel
+                    </button>
+                </div>
+
+            </div>
+
+            <div
+                id="passwordMessage"
+                class="message"
+            ></div>
+
+        </div>
+
+
+        <!-- ADMIN PANEL -->
+        <div
+            id="adminControlPanel"
+            class="card admin-card"
+            style="display: none;"
+        >
+
+            <h2>
+                Admin Staff Account Management
+            </h2>
+
+            <p class="small-note">
+                Staff accounts are stored centrally in the
+                Google Sheet. Passwords are not displayed in
+                the browser.
+            </p>
+
+            <div
+                class="form-grid"
+                style="align-items: end;"
+            >
+
+                <div class="form-group">
+                    <label for="newStaffUser">
+                        New staff username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="newStaffUser"
+                        placeholder="Example: nurse_mary"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="newStaffPass">
+                        Initial password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="newStaffPass"
+                        placeholder="At least 6 characters"
+                        autocomplete="new-password"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <button
+                        type="button"
+                        id="registerStaffButton"
+                        class="btn-primary"
+                        onclick="registerNewStaff()"
+                    >
+                        Create Staff Account
+                    </button>
+                </div>
+
+            </div>
+
+            <div
+                id="adminMessage"
+                class="message"
+            ></div>
+
+            <h3>
+                Active Registered Accounts
+            </h3>
+
+            <div class="table-container">
+
+                <table style="min-width: 500px;">
+
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Account Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="adminStaffTableBody">
+                        <tr>
+                            <td
+                                colspan="3"
+                                class="table-status"
+                            >
+                                Loading accounts...
+                            </td>
+                        </tr>
                     </tbody>
-            </table>
-        </div>
-    </div>
 
-    <div class="card">
-        <h2>Book a Patient Room</h2>
-        <form id="bookingForm">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Date</label>
-                    <input type="date" name="date" required>
-                </div>
-                <div class="form-group">
-                    <label>Patient Name</label>
-                    <input type="text" name="name" required placeholder="Enter names">
-                </div>
-                <div class="form-group">
-                    <label>Service</label>
-                    <input type="text" name="service" required placeholder="Enter the requesting service">
-                </div>
-                <div class="form-group">
-                    <label>Type of Room</label>
-                    <select name="roomType" required>
-                        <option value="Big room">Big room</option>
-                        <option value="Small room">Small room</option>
-                        <option value="Any room">Any room</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Date of Admission</label>
-                    <input type="date" name="admissionDate" required>
-                </div>
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" name="phone" required placeholder="Enter telephone">
-                </div>
-                <div class="form-group full-width">
-                    <label>Requested by</label>
-                    <input type="text" name="booker" id="autoBookerField" required placeholder="Dr. / Nurse Name">
-                </div>
-                <div class="form-group full-width">
-                    <label>Observation</label>
-                    <textarea name="observation" rows="3" placeholder="Enter special clinical notes or requirements..."></textarea>
-                </div>
+                </table>
+
             </div>
-            
-            <button type="submit" id="submitBtn" class="btn-primary">Submit Booking</button>
-        </form>
-    </div>
 
-    <div class="card">
-        <h3>Current Room Bookings (Read-Only)</h3>
-        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="🔍 Search for patient name..." style="width: 100%; padding: 12px; margin-bottom: 15px;">
-        
-        <div class="table-container">
-            <table id="bookingsTable">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Names</th>
-                        <th>Service</th>
-                        <th>Type of Room</th>
-                        <th>Admission Date</th>
-                        <th>Phone</th>
-                        <th>Requested by</th> 
-                        <th>Observation</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
+            <div style="margin-top: 15px;">
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    onclick="loadStaffAccounts()"
+                >
+                    Refresh Staff List
+                </button>
+            </div>
+
         </div>
 
-        <div style="margin-top: 15px; display: flex; gap: 10px;">
-            <button onclick="loadBookings()" class="btn-secondary">🔄 Refresh Booking List</button>
+
+        <!-- BOOKING FORM -->
+        <div class="card">
+
+            <h2>
+                Book a Patient Room
+            </h2>
+
+            <form id="bookingForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="bookingDate">
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="bookingDate"
+                            name="date"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="patientName">
+                            Patient Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="patientName"
+                            name="name"
+                            required
+                            placeholder="Enter names"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="service">
+                            Service
+                        </label>
+
+                        <input
+                            type="text"
+                            id="service"
+                            name="service"
+                            required
+                            placeholder="Requesting service"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roomType">
+                            Type of Room
+                        </label>
+
+                        <select
+                            id="roomType"
+                            name="roomType"
+                            required
+                        >
+                            <option value="Big room">
+                                Big room
+                            </option>
+
+                            <option value="Small room">
+                                Small room
+                            </option>
+
+                            <option value="Any room">
+                                Any room
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="admissionDate">
+                            Date of Admission
+                        </label>
+
+                        <input
+                            type="date"
+                            id="admissionDate"
+                            name="admissionDate"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            required
+                            placeholder="Enter telephone"
+                        >
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="autoBookerField">
+                            Requested by
+                        </label>
+
+                        <input
+                            type="text"
+                            id="autoBookerField"
+                            name="booker"
+                            required
+                            readonly
+                        >
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="observation">
+                            Observation
+                        </label>
+
+                        <textarea
+                            id="observation"
+                            name="observation"
+                            rows="3"
+                            placeholder="Enter special clinical notes or requirements..."
+                        ></textarea>
+                    </div>
+
+                </div>
+
+                <button
+                    type="submit"
+                    id="submitBtn"
+                    class="btn-primary"
+                >
+                    Submit Booking
+                </button>
+
+                <div
+                    id="bookingMessage"
+                    class="message"
+                ></div>
+
+            </form>
+
         </div>
+
+
+        <!-- BOOKINGS TABLE -->
+        <div class="card">
+
+            <h3>
+                Current Room Bookings
+            </h3>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by patient name..."
+                oninput="searchTable()"
+                style="
+                    width: 100%;
+                    padding: 12px;
+                    margin-bottom: 15px;
+                "
+            >
+
+            <div class="table-container">
+
+                <table id="bookingsTable">
+
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Names</th>
+                            <th>Service</th>
+                            <th>Type of Room</th>
+                            <th>Admission Date</th>
+                            <th>Phone</th>
+                            <th>Requested by</th>
+                            <th>Observation</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tableBody">
+                        <tr>
+                            <td
+                                colspan="8"
+                                class="table-status"
+                            >
+                                Sign in to load bookings.
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div style="margin-top: 15px;">
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    onclick="loadBookings()"
+                >
+                    Refresh Booking List
+                </button>
+            </div>
+
+        </div>
+
     </div>
-</div>
 
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwlsZwKW8g8y8ARStSivQ4ernhKPK15DxJiGjv3-GLJ4pZo4UfXEgA2XVobafRQCoQ8JQ/exec'; 
-    let currentUser = "";
 
-    // 1. Database Initialization Strategy
-    function getStaffDatabase() {
-        let db = localStorage.getItem('URUSARO_STAFF_DB');
-        if (!db) {
-            const defaultDB = [
-                { username: "admin", password: "password123" }
-            ];
-            localStorage.setItem('URUSARO_STAFF_DB', JSON.stringify(defaultDB));
-            return defaultDB;
-        }
-        return JSON.parse(db);
-    }
+    <script>
+        /*
+         * Replace this URL if your latest Apps Script
+         * deployment uses a different web app URL.
+         */
+        const scriptURL =
+            "https://script.google.com/macros/s/AKfycbwlsZwKW8g8y8ARStSivQ4ernhKPK15DxJiGjv3-GLJ4pZo4UfXEgA2XVobafRQCoQ8JQ/exec";
 
-    // 2. Gatekeeper Authentication Layer
-    function verifyAccess() {
-        const userInput = document.getElementById('staffUsername').value.trim();
-        const passInput = document.getElementById('staffPassword').value;
-        const errorLabel = document.getElementById('loginError');
 
-        const currentDB = getStaffDatabase();
-        const verifiedUser = currentDB.find(user => user.username.toLowerCase() === userInput.toLowerCase() && user.password === passInput);
+        let currentUser = "";
+        let currentPassword = "";
+        let currentUserIsAdmin = false;
 
-        if (verifiedUser) {
-            currentUser = verifiedUser.username;
-            errorLabel.style.display = 'none';
-            
-            document.getElementById('lockScreen').style.display = 'none';
-            document.getElementById('dashboardContent').style.display = 'block';
-            document.getElementById('displayUser').innerText = currentUser;
-            document.getElementById('autoBookerField').value = currentUser;
 
-            // Display Admin tools exclusively to master configuration
-            if(currentUser.toLowerCase() === 'admin') {
-                document.getElementById('adminControlPanel').style.display = 'block';
-                renderAdminStaffTable();
-            } else {
-                document.getElementById('adminControlPanel').style.display = 'none';
+        /*
+         * Send a POST request to Google Apps Script.
+         */
+        async function postToServer(data) {
+            const body = new URLSearchParams();
+
+            Object.entries(data).forEach(([key, value]) => {
+                body.append(
+                    key,
+                    value === undefined || value === null
+                        ? ""
+                        : String(value)
+                );
+            });
+
+            const response = await fetch(scriptURL, {
+                method: "POST",
+                body: body
+            });
+
+            if (!response.ok) {
+                throw new Error(
+                    "The server returned HTTP " +
+                    response.status
+                );
             }
 
-            loadBookings();
-        } else {
-            errorLabel.style.display = 'block';
-            document.getElementById('staffPassword').value = '';
-        }
-    }
-
-    // 3. Clear Session Layer
-    function handleSignOut() {
-        currentUser = "";
-        document.getElementById('staffUsername').value = "";
-        document.getElementById('staffPassword').value = "";
-        document.getElementById('passwordResetPanel').style.display = 'none';
-        document.getElementById('dashboardContent').style.display = 'none';
-        document.getElementById('lockScreen').style.display = 'flex';
-    }
-
-    // 4. Self-Service Password Manager Functions
-    function togglePasswordPanel() {
-        const panel = document.getElementById('passwordResetPanel');
-        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-        document.getElementById('selfNewPass').value = '';
-    }
-
-    function changeOwnPassword() {
-        const newPass = document.getElementById('selfNewPass').value.trim();
-        if(!newPass) {
-            alert("Password text cannot be left empty.");
-            return;
+            return response.json();
         }
 
-        let currentDB = getStaffDatabase();
-        let targetIndex = currentDB.findIndex(user => user.username.toLowerCase() === currentUser.toLowerCase());
 
-        if(targetIndex !== -1) {
-            currentDB[targetIndex].password = newPass;
-            localStorage.setItem('URUSARO_STAFF_DB', JSON.stringify(currentDB));
-            alert("Success! Your access password has been updated.");
-            togglePasswordPanel();
-            
-            // Re-render table if the active editor is the admin
-            if(currentUser.toLowerCase() === 'admin') {
-                renderAdminStaffTable();
+        /*
+         * Display a message inside a selected element.
+         */
+        function showMessage(elementId, text, type = "info") {
+            const element =
+                document.getElementById(elementId);
+
+            element.textContent = text;
+            element.className =
+                "message " + type;
+        }
+
+
+        /*
+         * Hide and clear a message.
+         */
+        function clearMessage(elementId) {
+            const element =
+                document.getElementById(elementId);
+
+            element.textContent = "";
+            element.className = "message";
+        }
+
+
+        /*
+         * Authenticate against the central Staff sheet.
+         */
+        async function verifyAccess() {
+            const username =
+                document
+                    .getElementById("staffUsername")
+                    .value
+                    .trim();
+
+            const password =
+                document
+                    .getElementById("staffPassword")
+                    .value;
+
+            const loginButton =
+                document.getElementById("loginButton");
+
+            clearMessage("loginMessage");
+
+            if (!username || !password) {
+                showMessage(
+                    "loginMessage",
+                    "Enter your username and password.",
+                    "error"
+                );
+
+                return;
             }
-        }
-    }
 
-    // 5. Admin Sign Up Core Engine
-    function registerNewStaff() {
-        const userIn = document.getElementById('newStaffUser').value.trim();
-        const passIn = document.getElementById('newStaffPass').value.trim();
+            loginButton.disabled = true;
+            loginButton.textContent = "Signing in...";
 
-        if(!userIn || !passIn) {
-            alert('Please supply both a registration username and validation password phrase.');
-            return;
-        }
+            try {
+                const result = await postToServer({
+                    action: "login",
+                    user: username,
+                    pass: password
+                });
 
-        let currentDB = getStaffDatabase();
-        
-        if(currentDB.some(user => user.username.toLowerCase() === userIn.toLowerCase())) {
-            alert('An account profile with that exact user identity string already exists!');
-            return;
-        }
+                if (!result.success) {
+                    showMessage(
+                        "loginMessage",
+                        result.message ||
+                            "Invalid credentials.",
+                        "error"
+                    );
 
-        currentDB.push({ username: userIn, password: passIn });
-        localStorage.setItem('URUSARO_STAFF_DB', JSON.stringify(currentDB));
-        
-        alert(`Account created successfully for: ${userIn}`);
-        document.getElementById('newStaffUser').value = "";
-        document.getElementById('newStaffPass').value = "";
-        renderAdminStaffTable();
-    }
+                    document
+                        .getElementById("staffPassword")
+                        .value = "";
 
-    function deleteStaffAccount(usernameToDelete) {
-        if(usernameToDelete.toLowerCase() === 'admin') {
-            alert('Security Failure: Master admin structural account configuration cannot be removed.');
-            return;
-        }
-
-        if(confirm(`Are you certain you want to completely revoke register database access for user: ${usernameToDelete}?`)) {
-            let currentDB = getStaffDatabase();
-            currentDB = currentDB.filter(user => user.username.toLowerCase() !== usernameToDelete.toLowerCase());
-            localStorage.setItem('URUSARO_STAFF_DB', JSON.stringify(currentDB));
-            renderAdminStaffTable();
-        }
-    }
-
-    function renderAdminStaffTable() {
-        const tableBody = document.getElementById('adminStaffTableBody');
-        const currentDB = getStaffDatabase();
-        tableBody.innerHTML = "";
-
-        currentDB.forEach(user => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><b>${user.username}</b></td>
-                <td><code>${user.password}</code></td>
-                <td>
-                    ${user.username.toLowerCase() === 'admin' ? 
-                    '<span style="color:gray; font-size:0.8rem;">Master Profile</span>' : 
-                    `<button class="btn-danger" onclick="deleteStaffAccount('${user.username}')">Revoke Profile</button>`}
-                </td>
-            `;
-            tableBody.appendChild(tr);
-        });
-    }
-
-    // 6. Native Functional Forms & Sheets Pipelines
-    const form = document.getElementById('bookingForm');
-    const submitBtn = document.getElementById('submitBtn');
-
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        submitBtn.innerText = "Submitting...";
-        submitBtn.disabled = true;
-
-        const data = new URLSearchParams(new FormData(form));
-
-        fetch(scriptURL, { method: 'POST', body: data })
-        .then(response => {
-            alert('Success! Patient room booked securely.');
-            form.reset();
-            document.getElementById('autoBookerField').value = currentUser;
-            submitBtn.innerText = "Submit Booking";
-            submitBtn.disabled = false;
-            loadBookings(); 
-        })
-        .catch(error => {
-            console.error('Error!', error.message);
-            alert('There was an error.');
-            submitBtn.innerText = "Submit Booking";
-            submitBtn.disabled = false;
-        });
-    });
-
-    function loadBookings() {
-        const tableBody = document.getElementById('tableBody');
-        tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">Fetching server registry files...</td></tr>';
-        
-        fetch(scriptURL)
-            .then(res => res.json())
-            .then(data => {
-                tableBody.innerHTML = ''; 
-                if (data.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">No bookings found.</td></tr>';
                     return;
                 }
 
-                data.forEach((row, index) => { 
-                    const tr = document.createElement('tr');
-                    for(let i = 0; i < 8; i++) {
-                        const td = document.createElement('td');
-                        if (i === 7) { 
-                            const input = document.createElement('input');
-                            input.type = "text";
-                            input.value = row[i] || '';
-                            input.onchange = function() {
-                                updateObservation(index + 1, this.value); 
-                            };
-                            td.appendChild(input);
-                        } else {
-                            td.innerText = row[i] || '-';
-                        }
-                        tr.appendChild(td);
-                    }
-                    tableBody.appendChild(tr);
-                });
-            })
-            .catch(err => {
-                console.error("Fetch Error:", err);
-                tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:red; padding:20px;">Error loading data.</td></tr>';
-            });
-    }
+                currentUser = result.username;
+                currentPassword = password;
+                currentUserIsAdmin =
+                    Boolean(result.isAdmin);
 
-    function updateObservation(rowNumber, newNote) {
-        const formData = new FormData();
-        formData.append('action', 'update');
-        formData.append('row', rowNumber);
-        formData.append('observation', newNote);
+                document
+                    .getElementById("displayUser")
+                    .textContent = currentUser;
 
-        fetch(scriptURL, { method: 'POST', body: new URLSearchParams(formData) })
-            .then(() => console.log("Observation updated for row " + rowNumber))
-            .catch(err => alert("Error updating note."));
-    }
+                document
+                    .getElementById("autoBookerField")
+                    .value = currentUser;
 
-    function searchTable() {
-        const input = document.getElementById("searchInput");
-        const filter = input.value.toUpperCase();
-        const table = document.getElementById("bookingsTable");
-        const tr = table.getElementsByTagName("tr");
+                document
+                    .getElementById("lockScreen")
+                    .style.display = "none";
 
-        for (let i = 1; i < tr.length; i++) {
-            const td = tr[i].getElementsByTagName("td")[1]; 
-            if (td) {
-                const txtValue = td.textContent || td.innerText;
-                tr[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+                document
+                    .getElementById("dashboardContent")
+                    .style.display = "block";
+
+                if (currentUserIsAdmin) {
+                    document
+                        .getElementById(
+                            "adminControlPanel"
+                        )
+                        .style.display = "block";
+
+                    await loadStaffAccounts();
+                } else {
+                    document
+                        .getElementById(
+                            "adminControlPanel"
+                        )
+                        .style.display = "none";
+                }
+
+                setDefaultBookingDate();
+                await loadBookings();
+
+            } catch (error) {
+                console.error(error);
+
+                showMessage(
+                    "loginMessage",
+                    "Unable to connect to the server. " +
+                        error.message,
+                    "error"
+                );
+
+            } finally {
+                loginButton.disabled = false;
+                loginButton.textContent = "Sign In";
             }
         }
-    }
 
-    getStaffDatabase();
-</script>
+
+        /*
+         * Sign the current user out.
+         */
+        function handleSignOut() {
+            currentUser = "";
+            currentPassword = "";
+            currentUserIsAdmin = false;
+
+            document
+                .getElementById("staffUsername")
+                .value = "";
+
+            document
+                .getElementById("staffPassword")
+                .value = "";
+
+            document
+                .getElementById("selfNewPass")
+                .value = "";
+
+            document
+                .getElementById("confirmNewPass")
+                .value = "";
+
+            document
+                .getElementById("passwordResetPanel")
+                .style.display = "none";
+
+            document
+                .getElementById("adminControlPanel")
+                .style.display = "none";
+
+            document
+                .getElementById("dashboardContent")
+                .style.display = "none";
+
+            document
+                .getElementById("lockScreen")
+                .style.display = "flex";
+
+            clearMessage("loginMessage");
+            clearMessage("adminMessage");
+            clearMessage("passwordMessage");
+            clearMessage("bookingMessage");
+        }
+
+
+        /*
+         * Open or close the password-change panel.
+         */
+        function togglePasswordPanel() {
+            const panel =
+                document.getElementById(
+                    "passwordResetPanel"
+                );
+
+            const isHidden =
+                panel.style.display === "none";
+
+            panel.style.display =
+                isHidden ? "block" : "none";
+
+            document
+                .getElementById("selfNewPass")
+                .value = "";
+
+            document
+                .getElementById("confirmNewPass")
+                .value = "";
+
+            clearMessage("passwordMessage");
+        }
+
+
+        /*
+         * Change the logged-in user's password.
+         */
+        async function changeOwnPassword() {
+            const newPassword =
+                document
+                    .getElementById("selfNewPass")
+                    .value;
+
+            const confirmPassword =
+                document
+                    .getElementById("confirmNewPass")
+                    .value;
+
+            const button =
+                document.getElementById(
+                    "changePasswordButton"
+                );
+
+            clearMessage("passwordMessage");
+
+            if (!newPassword || !confirmPassword) {
+                showMessage(
+                    "passwordMessage",
+                    "Enter and confirm your new password.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                showMessage(
+                    "passwordMessage",
+                    "The password must contain at least 6 characters.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showMessage(
+                    "passwordMessage",
+                    "The two new passwords do not match.",
+                    "error"
+                );
+
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = "Updating...";
+
+            try {
+                const result = await postToServer({
+                    action: "updatePassword",
+                    user: currentUser,
+                    currentPass: currentPassword,
+                    newPass: newPassword
+                });
+
+                if (!result.success) {
+                    showMessage(
+                        "passwordMessage",
+                        result.message ||
+                            "Password update failed.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+                currentPassword = newPassword;
+
+                document
+                    .getElementById("selfNewPass")
+                    .value = "";
+
+                document
+                    .getElementById("confirmNewPass")
+                    .value = "";
+
+                showMessage(
+                    "passwordMessage",
+                    result.message ||
+                        "Password updated successfully.",
+                    "success"
+                );
+
+            } catch (error) {
+                console.error(error);
+
+                showMessage(
+                    "passwordMessage",
+                    "Unable to update the password. " +
+                        error.message,
+                    "error"
+                );
+
+            } finally {
+                button.disabled = false;
+                button.textContent =
+                    "Update Password";
+            }
+        }
+
+
+        /*
+         * Load live staff accounts for the administrator.
+         */
+        async function loadStaffAccounts() {
+            if (!currentUserIsAdmin) {
+                return;
+            }
+
+            const tableBody =
+                document.getElementById(
+                    "adminStaffTableBody"
+                );
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="3"
+                        class="table-status"
+                    >
+                        Loading live staff accounts...
+                    </td>
+                </tr>
+            `;
+
+            try {
+                const result = await postToServer({
+                    action: "listStaff",
+                    adminUser: currentUser,
+                    adminPass: currentPassword
+                });
+
+                if (!result.success) {
+                    throw new Error(
+                        result.message ||
+                        "Unable to load staff."
+                    );
+                }
+
+                renderAdminStaffTable(
+                    result.staff || []
+                );
+
+            } catch (error) {
+                console.error(error);
+
+                tableBody.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="3"
+                            class="table-status status-error"
+                        >
+                            ${escapeHtml(error.message)}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+
+        /*
+         * Render staff usernames.
+         */
+        function renderAdminStaffTable(staffAccounts) {
+            const tableBody =
+                document.getElementById(
+                    "adminStaffTableBody"
+                );
+
+            tableBody.innerHTML = "";
+
+            if (staffAccounts.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="3"
+                            class="table-status"
+                        >
+                            No staff accounts were found.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+            staffAccounts.forEach((staff) => {
+                const row =
+                    document.createElement("tr");
+
+                const usernameCell =
+                    document.createElement("td");
+
+                const typeCell =
+                    document.createElement("td");
+
+                const actionsCell =
+                    document.createElement("td");
+
+                const usernameStrong =
+                    document.createElement("strong");
+
+                usernameStrong.textContent =
+                    staff.username;
+
+                usernameCell.appendChild(
+                    usernameStrong
+                );
+
+                typeCell.textContent =
+                    staff.isAdmin
+                        ? "Master Administrator"
+                        : "Staff";
+
+                if (staff.isAdmin) {
+                    const label =
+                        document.createElement("span");
+
+                    label.textContent =
+                        "Protected account";
+
+                    label.style.color = "#64748b";
+                    label.style.fontSize = "0.82rem";
+
+                    actionsCell.appendChild(label);
+                } else {
+                    const deleteButton =
+                        document.createElement("button");
+
+                    deleteButton.type = "button";
+                    deleteButton.className =
+                        "btn-danger";
+
+                    deleteButton.textContent =
+                        "Delete Account";
+
+                    deleteButton.addEventListener(
+                        "click",
+                        function () {
+                            deleteStaffAccount(
+                                staff.username
+                            );
+                        }
+                    );
+
+                    actionsCell.appendChild(
+                        deleteButton
+                    );
+                }
+
+                row.appendChild(usernameCell);
+                row.appendChild(typeCell);
+                row.appendChild(actionsCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
+
+        /*
+         * Create a live staff account.
+         */
+        async function registerNewStaff() {
+            const username =
+                document
+                    .getElementById("newStaffUser")
+                    .value
+                    .trim();
+
+            const password =
+                document
+                    .getElementById("newStaffPass")
+                    .value;
+
+            const button =
+                document.getElementById(
+                    "registerStaffButton"
+                );
+
+            clearMessage("adminMessage");
+
+            if (!username || !password) {
+                showMessage(
+                    "adminMessage",
+                    "Enter the new username and password.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (username.length < 3) {
+                showMessage(
+                    "adminMessage",
+                    "The username must contain at least 3 characters.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage(
+                    "adminMessage",
+                    "The password must contain at least 6 characters.",
+                    "error"
+                );
+
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = "Creating...";
+
+            try {
+                const result = await postToServer({
+                    action: "registerStaff",
+                    adminUser: currentUser,
+                    adminPass: currentPassword,
+                    user: username,
+                    pass: password
+                });
+
+                if (!result.success) {
+                    showMessage(
+                        "adminMessage",
+                        result.message ||
+                            "Account creation failed.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+                document
+                    .getElementById("newStaffUser")
+                    .value = "";
+
+                document
+                    .getElementById("newStaffPass")
+                    .value = "";
+
+                showMessage(
+                    "adminMessage",
+                    result.message ||
+                        "Staff account created.",
+                    "success"
+                );
+
+                await loadStaffAccounts();
+
+            } catch (error) {
+                console.error(error);
+
+                showMessage(
+                    "adminMessage",
+                    "Unable to create the account. " +
+                        error.message,
+                    "error"
+                );
+
+            } finally {
+                button.disabled = false;
+                button.textContent =
+                    "Create Staff Account";
+            }
+        }
+
+
+        /*
+         * Delete a live staff account.
+         */
+        async function deleteStaffAccount(username) {
+            const confirmed = window.confirm(
+                "Delete the staff account \"" +
+                username +
+                "\"?\n\nThis user will immediately lose access."
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            clearMessage("adminMessage");
+
+            try {
+                const result = await postToServer({
+                    action: "deleteStaff",
+                    adminUser: currentUser,
+                    adminPass: currentPassword,
+                    targetUser: username
+                });
+
+                if (!result.success) {
+                    showMessage(
+                        "adminMessage",
+                        result.message ||
+                            "Account deletion failed.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+                showMessage(
+                    "adminMessage",
+                    result.message ||
+                        "Staff account deleted.",
+                    "success"
+                );
+
+                await loadStaffAccounts();
+
+            } catch (error) {
+                console.error(error);
+
+                showMessage(
+                    "adminMessage",
+                    "Unable to delete the account. " +
+                        error.message,
+                    "error"
+                );
+            }
+        }
+
+
+        /*
+         * Submit a new room booking.
+         */
+        const bookingForm =
+            document.getElementById("bookingForm");
+
+        const submitButton =
+            document.getElementById("submitBtn");
+
+
+        bookingForm.addEventListener(
+            "submit",
+            async function (event) {
+                event.preventDefault();
+
+                clearMessage("bookingMessage");
+
+                submitButton.disabled = true;
+                submitButton.textContent =
+                    "Submitting...";
+
+                const formData =
+                    new FormData(bookingForm);
+
+                const requestData = {
+                    action: "createBooking",
+                    date: formData.get("date"),
+                    name: formData.get("name"),
+                    service: formData.get("service"),
+                    roomType:
+                        formData.get("roomType"),
+                    admissionDate:
+                        formData.get("admissionDate"),
+                    phone: formData.get("phone"),
+                    booker: currentUser,
+                    observation:
+                        formData.get("observation")
+                };
+
+                try {
+                    const result =
+                        await postToServer(
+                            requestData
+                        );
+
+                    if (!result.success) {
+                        showMessage(
+                            "bookingMessage",
+                            result.message ||
+                                "Booking submission failed.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
+                    bookingForm.reset();
+
+                    document
+                        .getElementById(
+                            "autoBookerField"
+                        )
+                        .value = currentUser;
+
+                    setDefaultBookingDate();
+
+                    showMessage(
+                        "bookingMessage",
+                        result.message ||
+                            "Booking submitted successfully.",
+                        "success"
+                    );
+
+                    await loadBookings();
+
+                } catch (error) {
+                    console.error(error);
+
+                    showMessage(
+                        "bookingMessage",
+                        "Unable to submit the booking. " +
+                            error.message,
+                        "error"
+                    );
+
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.textContent =
+                        "Submit Booking";
+                }
+            }
+        );
+
+
+        /*
+         * Load all live bookings from the Bookings sheet.
+         */
+        async function loadBookings() {
+            const tableBody =
+                document.getElementById("tableBody");
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="8"
+                        class="table-status"
+                    >
+                        Loading live bookings...
+                    </td>
+                </tr>
+            `;
+
+            try {
+                const response =
+                    await fetch(
+                        scriptURL +
+                        "?time=" +
+                        Date.now()
+                    );
+
+                if (!response.ok) {
+                    throw new Error(
+                        "HTTP " + response.status
+                    );
+                }
+
+                const result =
+                    await response.json();
+
+                if (!result.success) {
+                    throw new Error(
+                        result.message ||
+                        "Unable to load bookings."
+                    );
+                }
+
+                renderBookings(
+                    result.bookings || []
+                );
+
+            } catch (error) {
+                console.error(error);
+
+                tableBody.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="8"
+                            class="table-status status-error"
+                        >
+                            Error loading bookings:
+                            ${escapeHtml(error.message)}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+
+        /*
+         * Render the booking table.
+         */
+        function renderBookings(bookings) {
+            const tableBody =
+                document.getElementById("tableBody");
+
+            tableBody.innerHTML = "";
+
+            if (bookings.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="8"
+                            class="table-status"
+                        >
+                            No bookings found.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+            bookings.forEach((booking, index) => {
+                const row =
+                    document.createElement("tr");
+
+                for (
+                    let columnIndex = 0;
+                    columnIndex < 8;
+                    columnIndex++
+                ) {
+                    const cell =
+                        document.createElement("td");
+
+                    if (columnIndex === 7) {
+                        const input =
+                            document.createElement(
+                                "input"
+                            );
+
+                        const status =
+                            document.createElement(
+                                "div"
+                            );
+
+                        input.type = "text";
+                        input.className =
+                            "observation-input";
+
+                        input.value =
+                            booking[columnIndex] || "";
+
+                        input.dataset.originalValue =
+                            input.value;
+
+                        status.className =
+                            "status-success";
+
+                        input.addEventListener(
+                            "change",
+                            async function () {
+                                const sheetRow =
+                                    index + 2;
+
+                                await updateObservation(
+                                    sheetRow,
+                                    input,
+                                    status
+                                );
+                            }
+                        );
+
+                        cell.appendChild(input);
+                        cell.appendChild(status);
+
+                    } else {
+                        cell.textContent =
+                            booking[columnIndex] ||
+                            "-";
+                    }
+
+                    row.appendChild(cell);
+                }
+
+                tableBody.appendChild(row);
+            });
+        }
+
+
+        /*
+         * Save an edited observation to the Bookings sheet.
+         */
+        async function updateObservation(
+            sheetRow,
+            inputElement,
+            statusElement
+        ) {
+            const newObservation =
+                inputElement.value;
+
+            inputElement.disabled = true;
+            statusElement.textContent =
+                "Saving...";
+
+            try {
+                const result = await postToServer({
+                    action: "updateBooking",
+                    sheetRow: sheetRow,
+                    observation: newObservation
+                });
+
+                if (!result.success) {
+                    throw new Error(
+                        result.message ||
+                        "Update failed."
+                    );
+                }
+
+                inputElement.dataset.originalValue =
+                    newObservation;
+
+                statusElement.textContent = "Saved";
+
+                window.setTimeout(function () {
+                    statusElement.textContent = "";
+                }, 1800);
+
+            } catch (error) {
+                console.error(error);
+
+                inputElement.value =
+                    inputElement.dataset.originalValue ||
+                    "";
+
+                statusElement.textContent =
+                    "Not saved";
+
+                statusElement.style.color =
+                    "#dc3545";
+
+                window.alert(
+                    "Unable to update the observation: " +
+                    error.message
+                );
+
+            } finally {
+                inputElement.disabled = false;
+            }
+        }
+
+
+        /*
+         * Filter the booking table by patient name.
+         */
+        function searchTable() {
+            const filter =
+                document
+                    .getElementById("searchInput")
+                    .value
+                    .trim()
+                    .toUpperCase();
+
+            const rows =
+                document
+                    .getElementById("tableBody")
+                    .getElementsByTagName("tr");
+
+            for (const row of rows) {
+                const cells =
+                    row.getElementsByTagName("td");
+
+                if (cells.length < 2) {
+                    continue;
+                }
+
+                const patientName =
+                    cells[1].textContent ||
+                    cells[1].innerText ||
+                    "";
+
+                row.style.display =
+                    patientName
+                        .toUpperCase()
+                        .includes(filter)
+                        ? ""
+                        : "none";
+            }
+        }
+
+
+        /*
+         * Set today's date as the default booking date.
+         */
+        function setDefaultBookingDate() {
+            const dateInput =
+                document.getElementById(
+                    "bookingDate"
+                );
+
+            if (!dateInput.value) {
+                const today = new Date();
+
+                const year =
+                    today.getFullYear();
+
+                const month =
+                    String(
+                        today.getMonth() + 1
+                    ).padStart(2, "0");
+
+                const day =
+                    String(
+                        today.getDate()
+                    ).padStart(2, "0");
+
+                dateInput.value =
+                    year + "-" + month + "-" + day;
+            }
+        }
+
+
+        /*
+         * Escape server text before using it in HTML.
+         */
+        function escapeHtml(value) {
+            return String(value)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+
+        /*
+         * Allow the Enter key to submit login.
+         */
+        document
+            .getElementById("staffUsername")
+            .addEventListener(
+                "keydown",
+                function (event) {
+                    if (event.key === "Enter") {
+                        verifyAccess();
+                    }
+                }
+            );
+
+
+        document
+            .getElementById("staffPassword")
+            .addEventListener(
+                "keydown",
+                function (event) {
+                    if (event.key === "Enter") {
+                        verifyAccess();
+                    }
+                }
+            );
+    </script>
+
 </body>
 </html>
